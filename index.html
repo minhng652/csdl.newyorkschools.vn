@@ -1,441 +1,1479 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NYS LMS</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        nys: {
-                            gold: '#f3b233',
-                            goldHover: '#e09f1f',
-                            navy: '#1b2c68',
-                            blueBg: '#11224d',
-                            cardBlue: 'rgba(23, 44, 98, 0.82)',
-                            darkBlue: '#131e3d',
-                        }
-                    }
-                }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSDL New York Schools</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            nys: {
+              gold: '#f3b233',
+              goldHover: '#e09f1f',
+              navy: '#1b2c68',
+              blueBg: '#11224d',
+              cardBlue: '#132448',
+              sidebar: '#0c1a3a',
+              border: 'rgba(255, 255, 255, 0.12)'
             }
+          }
         }
-    </script>
+      }
+    }
+  </script>
 
-    <style>
-        body {
-            background-color: #0b1736;
-            background-image: radial-gradient(circle at 50% 50%, #1a3275 0%, #0a1430 100%);
-            overflow-x: hidden;
-            font-family: 'Inter', sans-serif;
-        }
+  <style>
+    body {
+      background-color: #081126;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
 
-        .bg-diamond {
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-        }
+    .bg-diamond { transform: rotate(45deg); transition: all 0.5s ease; }
+    .diamond-img-container {
+      width: 140px; height: 140px; transform: rotate(45deg);
+      overflow: hidden; border-radius: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); position: absolute;
+    }
+    @media (min-width: 768px) {
+      .diamond-img-container { width: 210px; height: 210px; border-radius: 28px; }
+    }
+    .diamond-img {
+      width: 150%; height: 150%; object-fit: cover;
+      transform: rotate(-45deg) scale(1.15) translate(-10%, -10%);
+    }
+    .glass-card {
+      background: rgba(27, 49, 108, 0.85); backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
 
-        .diamond-img-container {
-            width: 140px;
-            height: 140px;
-            transform: rotate(45deg);
-            overflow: hidden;
-            border-radius: 18px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            position: absolute;
-        }
+    /* Tab Switchers */
+    .dashboard-tab { display: none; }
+    .dashboard-tab.active { display: block; }
 
-        @media (min-width: 768px) {
-            .diamond-img-container {
-                width: 210px;
-                height: 210px;
-                border-radius: 28px;
-            }
-        }
+    .teacher-tab { display: none; }
+    .teacher-tab.active { display: block; }
 
-        .diamond-img {
-            width: 150%;
-            height: 150%;
-            object-fit: cover;
-            transform: rotate(-45deg) scale(1.15) translate(-10%, -10%);
-        }
+    .nav-btn.active {
+      background-color: rgba(243, 178, 51, 0.15);
+      color: #f3b233; border-right: 4px solid #f3b233;
+    }
 
-        .glass-card {
-            background: rgba(27, 49, 108, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-    </style>
+    .account-subtab { display: none; }
+    .account-subtab.active { display: block; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b1736; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+  </style>
 </head>
-<body class="min-h-screen flex items-center justify-center relative p-4 select-none">
+<body class="min-h-screen text-white select-none">
 
-    <!-- BACKGROUND GEOMETRIC OVERLAYS & COLLAGE IMAGES -->
+  <!-- =================================================================== -->
+  <!-- MÀN HÌNH 1: TRANG CHỦ & CỔNG ĐĂNG NHẬP (PORTAL LOGIN)               -->
+  <!-- =================================================================== -->
+  <div id="loginPage" class="min-h-screen flex items-center justify-center relative p-4 bg-gradient-to-br from-[#0a1430] via-[#1a3275] to-[#0b1736]">
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div class="bg-diamond absolute -top-32 -left-32 w-96 h-96 bg-blue-600/20 rounded-3xl"></div>
-        <div class="bg-diamond absolute top-1/4 -right-20 w-80 h-80 bg-blue-500/10 rounded-3xl"></div>
-        <div class="bg-diamond absolute -bottom-20 left-1/3 w-96 h-96 bg-indigo-900/40 rounded-3xl"></div>
+      <div class="bg-diamond absolute -top-32 -left-32 w-96 h-96 bg-blue-600/20 rounded-3xl"></div>
+      <div class="bg-diamond absolute top-1/4 -right-20 w-80 h-80 bg-blue-500/10 rounded-3xl"></div>
+      <div class="bg-diamond absolute -bottom-20 left-1/3 w-96 h-96 bg-indigo-900/40 rounded-3xl"></div>
+      <div class="bg-diamond absolute top-28 left-[22%] w-16 h-16 bg-amber-500/80 rounded-lg shadow-lg"></div>
+      <div class="bg-diamond absolute top-1/2 left-[12%] w-24 h-24 bg-amber-600/60 rounded-xl shadow-lg"></div>
+      <div class="bg-diamond absolute bottom-36 right-[22%] w-20 h-20 bg-amber-400/70 rounded-xl shadow-lg"></div>
 
-        <div class="bg-diamond absolute top-28 left-[22%] w-16 h-16 bg-amber-500/80 rounded-lg shadow-lg"></div>
-        <div class="bg-diamond absolute top-1/2 left-[12%] w-24 h-24 bg-amber-600/60 rounded-xl shadow-lg"></div>
-        <div class="bg-diamond absolute bottom-36 right-[22%] w-20 h-20 bg-amber-400/70 rounded-xl shadow-lg"></div>
-
-        <!-- LEFT SIDE IMAGE COLLAGE -->
-        <div class="hidden lg:block">
-            <div class="diamond-img-container top-[12%] left-[6%]">
-                <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=600&auto=format&fit=crop" class="diamond-img" alt="Học sinh & Giáo viên" onerror="this.src='https://placehold.co/400x400/1b2c68/ffffff?text=NYS+School'">
-            </div>
-            
-            <div class="diamond-img-container top-[42%] left-[2%]">
-                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop" class="diamond-img" alt="Học sinh học tập" onerror="this.src='https://placehold.co/400x400/1b2c68/ffffff?text=Classroom'">
-            </div>
-
-            <div class="diamond-img-container top-[66%] left-[9%]">
-                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=600&auto=format&fit=crop" class="diamond-img" alt="Học sinh vui vẻ" onerror="this.src='https://placehold.co/400x400/1b2c68/ffffff?text=Student'">
-            </div>
+      <!-- Khối hình ảnh dạng Kim Cương bên trái -->
+      <div class="hidden lg:block">
+        <div class="diamond-img-container top-[12%] left-[6%]">
+          <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="diamond-img" alt="Học sinh &amp; Giáo viên">
         </div>
-
-        <!-- RIGHT SIDE IMAGE COLLAGE -->
-        <div class="hidden lg:block">
-            <div class="diamond-img-container top-[16%] right-[4%]">
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" class="diamond-img" alt="Thực hành máy tính" onerror="this.src='https://placehold.co/400x400/1b2c68/ffffff?text=E-Learning'">
-            </div>
-
-            <div class="diamond-img-container top-[52%] right-[5%]">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600&auto=format&fit=crop" class="diamond-img" alt="Học sinh nhóm" onerror="this.src='https://placehold.co/400x400/1b2c68/ffffff?text=Students'">
-            </div>
+        <div class="diamond-img-container top-[42%] left-[2%]">
+          <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="diamond-img" alt="Học sinh học tập">
         </div>
+        <div class="diamond-img-container top-[66%] left-[9%]">
+          <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="diamond-img" alt="Học sinh vui vẻ">
+        </div>
+      </div>
+
+      <!-- Khối hình ảnh dạng Kim Cương bên phải -->
+      <div class="hidden lg:block">
+        <div class="diamond-img-container top-[16%] right-[4%]">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="diamond-img" alt="Thực hành máy tính">
+        </div>
+        <div class="diamond-img-container top-[52%] right-[5%]">
+          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="diamond-img" alt="Học sinh nhóm">
+        </div>
+      </div>
     </div>
 
-    <!-- MAIN PORTAL CONTAINER (CENTER CARD) -->
+    <!-- Khung chính Portal Đăng Nhập -->
     <main class="relative z-10 w-full max-w-[460px] mx-auto">
-        <div class="glass-card rounded-3xl p-8 md:p-10 text-center text-white transition-all duration-300">
-            
-            <!-- SCHOOL LOGO & BRANDING -->
-            <div class="flex flex-col items-center mb-8">
-                <div class="w-28 h-28 md:w-32 md:h-32 mb-4 drop-shadow-xl hover:scale-105 transition-transform duration-300">
-                    <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <radialGradient id="outerRing" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#162963"/>
-                                <stop offset="85%" stop-color="#0c1840"/>
-                                <stop offset="100%" stop-color="#08102b"/>
-                            </radialGradient>
-
-                            <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#f8e08e"/>
-                                <stop offset="30%" stop-color="#dfa837"/>
-                                <stop offset="70%" stop-color="#f5d77f"/>
-                                <stop offset="100%" stop-color="#b8801d"/>
-                            </linearGradient>
-
-                            <linearGradient id="shieldBg" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#4a92d9"/>
-                                <stop offset="100%" stop-color="#245196"/>
-                            </linearGradient>
-
-                            <path id="textArcTop" d="M 52,200 A 148,148 0 1,1 348,200" fill="none"/>
-                            <path id="textArcBottom" d="M 68,200 A 132,132 0 0,0 332,200" fill="none"/>
-                        </defs>
-
-                        <circle cx="200" cy="200" r="192" fill="url(#goldBorder)" />
-                        <circle cx="200" cy="200" r="185" fill="#0b1739" />
-                        <circle cx="200" cy="200" r="181" fill="url(#goldBorder)" />
-                        <circle cx="200" cy="200" r="175" fill="url(#outerRing)" />
-                        <circle cx="200" cy="200" r="128" fill="none" stroke="url(#goldBorder)" stroke-width="4" />
-                        <circle cx="200" cy="200" r="122" fill="none" stroke="url(#goldBorder)" stroke-width="2" />
-
-                        <text font-family="'Inter', sans-serif" font-weight="800" font-size="20.5" fill="#ffffff" letter-spacing="2.5">
-                            <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">
-                                TRƯỜNG TIỂU HỌC - THCS &amp; THPT
-                            </textPath>
-                        </text>
-
-                        <text font-family="'Inter', sans-serif" font-weight="900" font-size="34" fill="#ffffff" letter-spacing="5">
-                            <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">
-                                NEW YORK
-                            </textPath>
-                        </text>
-
-                        <g fill="url(#goldBorder)">
-                            <polygon points="112,323 115,314 123,314 116,309 119,300 112,305 105,300 108,309 101,314 109,314" transform="scale(0.7) translate(50, 130)"/>
-                            <polygon points="288,323 291,314 299,314 292,309 295,300 288,305 281,300 284,309 277,314 285,314" transform="scale(0.7) translate(120, 130)"/>
-                        </g>
-                        
-                        <text x="200" y="336" font-family="'Inter', sans-serif" font-weight="700" font-size="14" fill="#dfa837" text-anchor="middle" letter-spacing="2">
-                            SINCE 2026
-                        </text>
-
-                        <g transform="translate(0, -4)">
-                            <path d="M 132,120 Q 200,105 268,120 Q 272,210 200,278 Q 128,210 132,120 Z" fill="url(#goldBorder)" />
-                            <path d="M 137,124 Q 200,111 263,124 Q 267,206 200,271 Q 133,206 137,124 Z" fill="url(#shieldBg)" />
-                            <path d="M 140,225 Q 170,220 200,225 T 260,225" fill="none" stroke="#6ba8e5" stroke-width="1.5" opacity="0.6"/>
-                            <path d="M 145,240 Q 175,235 200,240 T 255,240" fill="none" stroke="#6ba8e5" stroke-width="1.5" opacity="0.5"/>
-
-                            <g fill="url(#goldBorder)">
-                                <polygon points="163,148 160,138 165,146 166,136 168,146 172,137 170,148"/>
-                                <circle cx="166" cy="152" r="5"/>
-                                <path d="M 158,175 L 152,145 L 157,143 L 163,170 Z"/>
-                                <path d="M 150,140 C 146,134 153,128 150,123 C 155,127 157,132 153,139 Z" fill="#fce49d"/>
-                                <path d="M 155,170 C 152,200 150,220 162,238 C 170,230 168,190 165,170 Z"/>
-                            </g>
-
-                            <g fill="url(#goldBorder)" stroke="#1a3866" stroke-width="0.5">
-                                <rect x="182" y="195" width="36" height="28" rx="1"/>
-                                <rect x="187" y="202" width="7" height="15" fill="#245196"/>
-                                <rect x="196.5" y="202" width="7" height="15" fill="#245196"/>
-                                <rect x="206" y="202" width="7" height="15" fill="#245196"/>
-                                <rect x="187" y="172" width="26" height="23" rx="1"/>
-                                <rect x="191" y="178" width="5" height="12" fill="#245196"/>
-                                <rect x="197.5" y="178" width="5" height="12" fill="#245196"/>
-                                <rect x="204" y="178" width="5" height="12" fill="#245196"/>
-                                <path d="M 190,172 L 200,158 L 210,172 Z"/>
-                                <circle cx="200" cy="155" r="2.5" fill="#fce49d"/>
-                                <path d="M 180,196 Q 200,192 220,196" fill="none" stroke="url(#goldBorder)" stroke-width="2"/>
-                                <path d="M 185,173 Q 200,170 215,173" fill="none" stroke="url(#goldBorder)" stroke-width="2"/>
-                            </g>
-
-                            <g fill="url(#goldBorder)">
-                                <path d="M 238,185 L 235,232 C 237,234 241,234 243,232 L 240,185 Z"/>
-                                <path d="M 232,185 C 232,175 246,175 246,185 Z"/>
-                                <path d="M 239,176 C 230,165 245,152 238,140 C 248,150 252,165 242,176 Z" fill="#fce49d"/>
-                                <path d="M 239,172 C 234,164 243,156 238,148 C 243,154 246,164 240,172 Z" fill="#e09019"/>
-                            </g>
-                            <path d="M 160,248 C 180,260 220,260 240,248 C 225,253 175,253 160,248 Z" fill="#fce49d" opacity="0.8"/>
-                        </g>
-                    </svg>
-                </div>
-                <h1 class="text-xl md:text-2xl font-extrabold tracking-wider text-white uppercase font-serif">TRƯỜNG TIỂU HỌC - THCS &amp; THPT NEW YORK</h1>
-                <p class="text-xs text-blue-200 tracking-widest mt-1 italic opacity-90">Cổng thông tin điện tử New York Schools</p>
-            </div>
-
-            <!-- BUTTON SECTION -->
-            <div class="space-y-4 mb-6">
-                <button onclick="openLoginModal('Admin')" class="w-full py-3.5 px-6 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-900 font-bold text-base rounded-2xl shadow-lg transform active:scale-95 transition-all duration-200 flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-user-shield me-1"></i>
-                    <span>TÀI KHOẢN ADMIN</span>
-                </button>
-
-                <button onclick="openLoginModal('Giáo viên')" class="w-full py-3.5 px-6 bg-[#162765] hover:bg-[#121f52] border border-blue-400/30 text-white font-bold text-base rounded-2xl shadow-md transform active:scale-95 transition-all duration-200 flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-chalkboard-user me-1"></i>
-                    <span>TÀI KHOẢN GIÁO VIÊN</span>
-                </button>
-            </div>
-
-            <!-- FORGOT PASSWORD LINK -->
-            <div class="mb-8">
-                <button onclick="openForgotModal()" class="text-sm text-blue-200 hover:text-amber-400 underline underline-offset-4 font-medium transition-colors duration-200 cursor-pointer bg-transparent border-none">
-                    Quên mật khẩu?
-                </button>
-            </div>
-
-            <!-- LANGUAGE SELECTOR -->
-            <div class="inline-block relative">
-                <div class="flex items-center space-x-2 bg-blue-900/60 border border-blue-400/30 px-4 py-1.5 rounded-xl text-xs font-medium cursor-pointer hover:bg-blue-800/80 transition-colors">
-                    <span>🇻🇳</span>
-                    <span>Việt Nam</span>
-                    <i class="fa-solid fa-chevron-down text-[10px] ml-1 text-blue-300"></i>
-                </div>
-            </div>
-
+      <div class="glass-card rounded-3xl p-8 md:p-10 text-center text-white transition-all duration-300">
+        
+        <!-- Logo Trường New York chuẩn SVG -->
+        <div class="flex flex-col items-center mb-8">
+          <div class="w-28 h-28 md:w-32 md:h-32 mb-4 drop-shadow-xl hover:scale-105 transition-transform duration-300">
+            <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="outerRing" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#162963"></stop>
+                  <stop offset="85%" stop-color="#0c1840"></stop>
+                  <stop offset="100%" stop-color="#08102b"></stop>
+                </radialGradient>
+                <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f8e08e"></stop>
+                  <stop offset="30%" stop-color="#dfa837"></stop>
+                  <stop offset="70%" stop-color="#f5d77f"></stop>
+                  <stop offset="100%" stop-color="#b8801d"></stop>
+                </linearGradient>
+                <path id="textArcTop" d="M 52,200 A 148,148 0 1,1 348,200" fill="none"></path>
+                <path id="textArcBottom" d="M 68,200 A 132,132 0 0,0 332,200" fill="none"></path>
+              </defs>
+              <circle cx="200" cy="200" r="192" fill="url(#goldBorder)"></circle>
+              <circle cx="200" cy="200" r="185" fill="#0b1739"></circle>
+              <circle cx="200" cy="200" r="181" fill="url(#goldBorder)"></circle>
+              <circle cx="200" cy="200" r="175" fill="url(#outerRing)"></circle>
+              <circle cx="200" cy="200" r="128" fill="none" stroke="url(#goldBorder)" stroke-width="4"></circle>
+              <text font-family="'Inter', sans-serif" font-weight="800" font-size="20.5" fill="#ffffff" letter-spacing="2.5">
+                <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">TRƯỜNG TIỂU HỌC - THCS &amp; THPT</textPath>
+              </text>
+              <text font-family="'Inter', sans-serif" font-weight="900" font-size="34" fill="#ffffff" letter-spacing="5">
+                <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">NEW YORK</textPath>
+              </text>
+              <text x="200" y="336" font-family="'Inter', sans-serif" font-weight="700" font-size="14" fill="#dfa837" text-anchor="middle" letter-spacing="2">★ SINCE 2026 ★</text>
+            </svg>
+          </div>
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-wider text-white uppercase font-serif">TRƯỜNG TIỂU HỌC - THCS &amp; THPT NEW YORK</h1>
+          <p class="text-xs text-blue-200 tracking-widest mt-1 italic opacity-90">Cơ Sở Dữ Liệu New York Schools</p>
         </div>
 
-        <div class="text-center mt-6 text-xs text-blue-300/60">
-            &copy; 2026 New York Schools. Tất cả quyền được bảo lưu.
+        <!-- Các Nút Chọn Vai Trò Đăng Nhập -->
+        <div class="space-y-4 mb-6">
+          <button onclick="openLoginModal('Admin')" class="w-full py-3.5 px-6 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-900 font-bold text-base rounded-2xl shadow-lg transform active:scale-95 transition-all flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-user-shield me-1"></i>
+            <span>TÀI KHOẢN ADMIN</span>
+          </button>
+
+          <button onclick="openLoginModal('Giáo viên')" class="w-full py-3.5 px-6 bg-[#162765] hover:bg-[#121f52] border border-blue-400/30 text-white font-bold text-base rounded-2xl shadow-md transform active:scale-95 transition-all flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-chalkboard-user me-1"></i>
+            <span>TÀI KHOẢN GIÁO VIÊN</span>
+          </button>
         </div>
+
+        <div class="mb-8">
+          <button onclick="openForgotModal()" class="text-sm text-blue-200 hover:text-amber-400 underline underline-offset-4 font-medium transition-colors bg-transparent border-none cursor-pointer">
+            Quên mật khẩu?
+          </button>
+        </div>
+
+        <div class="inline-block relative">
+          <div class="flex items-center space-x-2 bg-blue-900/60 border border-blue-400/30 px-4 py-1.5 rounded-xl text-xs font-medium">
+            <span>🇻🇳</span>
+            <span>Việt Nam</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-6 text-xs text-blue-300/60">
+        © 2026 New York Schools. Tất cả quyền được bảo lưu.
+      </div>
     </main>
 
-    <!-- LOGIN MODAL -->
+    <!-- MODAL ĐĂNG NHẬP (CÓ TÊN MIỀN CỐ ĐỊNH KHÔNG THỂ XÓA) -->
     <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-[#14234d] border border-blue-400/30 w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl transform scale-95 transition-transform duration-300 text-white relative">
-            
-            <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+      <div class="bg-[#14234d] border border-blue-400/30 w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl transform scale-95 transition-transform duration-300 text-white relative">
+        <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
 
-            <div class="text-center mb-6">
-                <div id="modalIcon" class="w-14 h-14 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                    <i class="fa-solid fa-user-shield"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white">Đăng Nhập <span id="roleTitle" class="text-amber-400">Admin</span></h3>
-                <p class="text-xs text-blue-200 mt-1">Hệ thống Giáo dục New York Schools</p>
-            </div>
-
-            <div id="errorMessage" class="hidden mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-xs text-red-200 text-center flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span id="errorText">Tên đăng nhập hoặc mật khẩu không chính xác!</span>
-            </div>
-
-            <div id="successMessage" class="hidden mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-xl text-xs text-green-200 text-center flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-circle-check"></i>
-                <span>Đăng nhập thành công!</span>
-            </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 uppercase mb-1">Tài khoản</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-blue-300 pointer-events-none">
-                            <i class="fa-regular fa-user"></i>
-                        </span>
-                        <input id="usernameInput" type="text" required placeholder="@newyorkschools.edu.vn" class="w-full pl-10 pr-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white placeholder-blue-300/50">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 uppercase mb-1">Mật khẩu</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-blue-300 pointer-events-none">
-                            <i class="fa-solid fa-lock"></i>
-                        </span>
-                        <input id="passwordInput" type="password" required placeholder="Mật khẩu" class="w-full pl-10 pr-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white placeholder-blue-300/50">
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between text-xs text-blue-200 pt-1">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" checked class="rounded bg-blue-950 border-blue-400/30 text-amber-400 focus:ring-0 mr-2">
-                        Ghi nhớ đăng nhập
-                    </label>
-                    <button type="button" onclick="closeModal('loginModal'); openForgotModal();" class="text-amber-400 hover:underline bg-transparent border-none cursor-pointer">Quên mật khẩu?</button>
-                </div>
-
-                <button type="submit" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl shadow-lg transition-all duration-200 mt-2">
-                    Đăng nhập
-                </button>
-            </form>
+        <div class="text-center mb-6">
+          <div id="modalIcon" class="w-14 h-14 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Đăng Nhập <span id="roleTitle" class="text-amber-400">Admin</span></h3>
+          <p class="text-xs text-blue-200 mt-1">Cơ Sở Dữ Liệu New York Schools</p>
         </div>
+
+        <div id="errorMessage" class="hidden mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-xs text-red-200 text-center flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span>Tên đăng nhập hoặc mật khẩu không chính xác!</span>
+        </div>
+
+        <div id="successMessage" class="hidden mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-xl text-xs text-green-200 text-center flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Đăng nhập thành công!</span>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-5">
+          <!-- KHUNG NHẬP EMAIL VỚI TÊN MIỀN CỐ ĐỊNH -->
+          <div class="relative pt-2">
+            <div class="border border-blue-400/40 bg-blue-950/80 rounded-2xl p-3 focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition-all flex items-center relative">
+              <span class="absolute -top-2.5 left-3 px-1.5 bg-[#14234d] text-[10px] font-bold text-amber-400 uppercase tracking-wider rounded">
+                Nhập email của bạn
+              </span>
+              <input id="usernameInput" type="text" required placeholder="Tài khoản" class="w-full bg-transparent border-none text-white text-sm focus:outline-none pr-36 font-medium">
+              <span class="absolute right-3.5 text-xs text-slate-400 font-mono font-semibold select-none pointer-events-none bg-blue-900/60 px-2 py-1 rounded-lg border border-blue-400/20">
+                @newyorkschools.edu.vn
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-blue-200 uppercase mb-1">Mật khẩu</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-blue-300 pointer-events-none">
+                <i class="fa-solid fa-lock"></i>
+              </span>
+              <input id="passwordInput" type="password" required placeholder="Mật Khẩu" class="w-full pl-10 pr-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white">
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-blue-200 pt-1">
+            <label class="flex items-center cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-blue-950 border-blue-400/30 text-amber-400 mr-2"> Ghi nhớ đăng nhập
+            </label>
+            <button type="button" onclick="closeModal('loginModal'); openForgotModal();" class="text-amber-400 hover:underline bg-transparent border-none">Quên mật khẩu?</button>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl shadow-lg transition-all mt-2">
+            Đăng nhập
+          </button>
+        </form>
+      </div>
     </div>
 
-    <!-- FORGOT PASSWORD MODAL -->
+    <!-- MODAL KHÔI PHỤC MẬT KHẨU -->
     <div id="forgotModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-[#14234d] border border-blue-400/30 w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl text-white relative transform scale-95 transition-transform duration-300">
-            <button onclick="closeModal('forgotModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+      <div class="bg-[#14234d] border border-blue-400/30 w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl text-white relative">
+        <button onclick="closeModal('forgotModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="text-center mb-6">
+          <div class="w-14 h-14 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <h3 class="text-xl font-bold">Khôi phục mật khẩu</h3>
+          <p class="text-xs text-blue-200 mt-1">Nhập Email tổ chức cấp để đặt lại mật khẩu</p>
+        </div>
+        <form onsubmit="handleForgot(event)" class="space-y-4">
+          <div>
+            <input type="email" required placeholder="example@newyorkschools.edu.vn" class="w-full px-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl text-sm text-white">
+          </div>
+          <button type="submit" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl shadow-lg">
+            Gửi yêu cầu khôi phục
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 
-            <div class="text-center mb-6">
-                <div class="w-14 h-14 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                    <i class="fa-solid fa-key"></i>
-                </div>
-                <h3 class="text-xl font-bold">Khôi phục mật khẩu</h3>
-                <p class="text-xs text-blue-200 mt-1">Nhập Email tổ chức cấp để đặt lại mật khẩu</p>
+
+  <!-- =================================================================== -->
+  <!-- MÀN HÌNH 2: TRANG QUẢN TRỊ ADMIN DASHBOARD                         -->
+  <!-- =================================================================== -->
+  <div id="dashboardPage" class="hidden h-screen flex overflow-hidden bg-[#081126]">
+
+    <aside class="w-64 bg-nys-sidebar border-r border-nys-border flex flex-col justify-between shrink-0">
+      <div>
+        <div class="p-5 border-b border-nys-border flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-sm tracking-wider text-white">NEW YORK SCHOOLS</h1>
+            <p class="text-[10px] text-blue-400 font-semibold tracking-widest">HỆ THỐNG GIÁO DỤC CHẤT LƯỢNG CAO NEW YORK SCHOOLS</p>
+          </div>
+        </div>
+
+        <nav class="mt-4 space-y-1">
+          <button onclick="switchAdminTab('home')" id="btn-admin-home" class="nav-btn active w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-house w-5"></i>
+            <span>Trang Chủ Admin</span>
+          </button>
+
+          <button onclick="switchAdminTab('tasks')" id="btn-admin-tasks" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-list-check w-5"></i>
+            <span>Tác vụ Quản trị</span>
+          </button>
+
+          <button onclick="switchAdminTab('accounts')" id="btn-admin-accounts" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-users-gear w-5"></i>
+            <span>Quản Lý Tài Khoản</span>
+          </button>
+
+          <button onclick="switchAdminTab('notifications')" id="btn-admin-notifications" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-bullhorn w-5"></i>
+            <span>Gửi Thông Báo</span>
+          </button>
+
+          <button onclick="switchAdminTab('messages')" id="btn-admin-messages" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-comments w-5"></i>
+            <span>Tin Nhắn</span>
+          </button>
+
+          <button onclick="switchAdminTab('settings')" id="btn-admin-settings" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-gear w-5"></i>
+            <span>Cài Đặt</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-4 border-t border-nys-border flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">NA</div>
+          <div>
+            <p class="text-xs font-bold text-white">Quản trị viên Admin</p>
+            <p class="text-[10px] text-slate-400">Quản trị hệ thống</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="text-slate-400 hover:text-amber-400 p-1.5 transition-colors" title="Đăng xuất">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#081126]">
+      <header class="h-16 border-b border-nys-border px-8 flex items-center justify-between shrink-0 bg-nys-sidebar/50 backdrop-blur-md">
+        <div class="flex items-center space-x-3">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-school text-amber-400"></i> NEW YORK SCHOOLS <span class="text-slate-400 font-normal">| Cơ Sở Dữ Liệu New York Schools</span>
+          </h2>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2.5">
+            <div class="relative">
+              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">NA</div>
+              <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-slate-900 rounded-full"></span>
+            </div>
+            <div class="text-left">
+              <p class="text-xs font-bold text-white">Quản trị viên Admin</p>
+              <p class="text-[10px] text-slate-400">Quản trị hệ thống</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+        <!-- 1. TRANG CHỦ ADMIN BANNER KẾT HỢP ÁNH 1 VÀ ẢNH 2 (ĐÃ BỎ ONLINE & API SERVER) -->
+        <section id="tab-admin-home" class="dashboard-tab active space-y-6">
+          <div class="bg-gradient-to-r from-[#122254] via-[#162a6b] to-[#0f1d47] rounded-3xl p-6 md:p-8 border border-blue-400/30 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="absolute right-4 -bottom-8 opacity-10 text-white text-9xl pointer-events-none">
+              <i class="fa-solid fa-graduation-cap"></i>
             </div>
 
-            <form onsubmit="handleForgot(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-blue-200 uppercase mb-1">Email của New York Schools</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-blue-300 pointer-events-none">
-                            <i class="fa-regular fa-envelope"></i>
-                        </span>
-                        <input type="email" required placeholder="example@newyorkschools.edu.vn" class="w-full pl-10 pr-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white">
-                    </div>
+            <div class="relative z-10 space-y-3.5 max-w-2xl">
+              <div>
+                <span class="px-3.5 py-1 bg-blue-600/30 border border-blue-400/40 text-blue-200 rounded-xl text-xs font-bold tracking-wide inline-block">
+                  NĂM HỌC 2026 - 2027
+                </span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-wide">
+                  Xin chào, Ban Giám Hiệu 👋
+                </h2>
+                <span class="px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-lg text-xs font-bold tracking-wider">
+                  Mã NYer: 000001
+                </span>
+              </div>
+
+              <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                Chào mừng Thầy/Cô đến với Cơ Sở Dữ Liệu New York Schools
+              </p>
+
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <span class="px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 font-semibold rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-crown text-amber-400"></i> Quản trị viên Cơ Sở Dữ Liệu
+                </span>
+                <span class="px-3 py-1 bg-blue-600/40 border border-blue-400/50 text-white font-semibold rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-building-columns text-amber-400"></i> Ban Giám Hiệu Nhà Trường
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2 text-xs text-blue-200 opacity-90 pt-1">
+                <i class="fa-solid fa-envelope text-amber-400"></i>
+                <span class="font-mono">admin@newyorkschools.edu.vn</span>
+              </div>
+            </div>
+
+            <div class="relative z-10 shrink-0 w-full md:w-auto">
+              <div class="bg-slate-900/60 backdrop-blur-md border border-blue-400/30 rounded-2xl p-4 md:p-5 flex items-center justify-around md:justify-center gap-6 shadow-xl">
+                <div class="text-center px-3">
+                  <p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">TÀI KHOẢN</p>
+                  <p class="text-2xl md:text-3xl font-extrabold text-amber-400">1,334</p>
                 </div>
-                <button type="submit" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-all shadow-lg">
-                    Gửi yêu cầu khôi phục
-                </button>
+                <div class="w-px h-10 bg-blue-400/30"></div>
+                <div class="text-center px-3">
+                  <p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">LỚP HỌC</p>
+                  <p class="text-2xl md:text-3xl font-extrabold text-white">60 Lớp</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. TAB TÁC VỤ QUẢN TRỊ (ĐÚNG 8 CÔNG CỤ THEO YÊU CẦU) -->
+        <section id="tab-admin-tasks" class="dashboard-tab space-y-6">
+          <div class="bg-nys-cardBlue p-6 rounded-2xl border border-nys-border space-y-5">
+            <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-list-check"></i> Các Tác Vụ Quản Trị Hệ Thống
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div onclick="openWidgetModal('Quản Lý Hồ Sơ', 'Quản lý thông tin lý lịch cán bộ, giáo viên và danh sách hồ sơ toàn trường.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-id-card"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Quản lý hồ sơ</p>
+                <p class="text-[10px] text-slate-400">Lý lịch cán bộ</p>
+              </div>
+
+              <div onclick="openWidgetModal('Lịch Hoạt Động', 'Sắp xếp lịch hoạt động chung của Nhà trường, các sự kiện và lễ kỷ niệm.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Lịch hoạt động</p>
+                <p class="text-[10px] text-slate-400">Kế hoạch trường</p>
+              </div>
+
+              <div onclick="openWidgetModal('Sổ Ghi Đầu Bài', 'Kiểm tra tình hình ghi chép sổ đầu bài của tất cả các lớp toàn trường.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-green-500/20 text-green-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-book-open"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Sổ ghi đầu bài</p>
+                <p class="text-[10px] text-slate-400">Giám sát giờ dạy</p>
+              </div>
+
+              <div onclick="openWidgetModal('Điểm Danh', 'Tổng hợp báo cáo chuyên cần, nghỉ học có phép và không phép của các khối.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-clipboard-user"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Điểm danh</p>
+                <p class="text-[10px] text-slate-400">Chuyên cần toàn trường</p>
+              </div>
+
+              <div onclick="openWidgetModal('Đặt Lại Mật Khẩu GV', 'Cấp lại mật khẩu truy cập hệ thống LMS cho Giáo viên khi có yêu cầu.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-red-500/20 text-red-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-key"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Đặt lại mật khẩu GV</p>
+                <p class="text-[10px] text-slate-400">Khôi phục mật khẩu</p>
+              </div>
+
+              <div onclick="openWidgetModal('Sổ Báo Giảng', 'Theo dõi tiến độ phân công giảng dạy của Hội đồng Giáo viên các bộ môn.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Sổ báo giảng</p>
+                <p class="text-[10px] text-slate-400">Tiến độ phân công</p>
+              </div>
+
+              <div onclick="openWidgetModal('Bảng Điểm Học Tập', 'Xem và duyệt tổng thể bảng điểm trung bình các học kỳ của toàn thể học sinh.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-500/20 text-yellow-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Bảng điểm học tập</p>
+                <p class="text-[10px] text-slate-400">Duyệt điểm tổng kết</p>
+              </div>
+
+              <div onclick="openWidgetModal('Thi Đua', 'Bảng xếp hạng thi đua nề nếp, phong trào học tập giữa các lớp trong năm.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-trophy"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Thi đua</p>
+                <p class="text-[10px] text-slate-400">Xếp hạng phong trào</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. MỤC QUẢN LÝ TÀI KHOẢN -->
+        <section id="tab-admin-accounts" class="dashboard-tab space-y-6">
+          <div class="bg-nys-cardBlue p-6 rounded-2xl border border-nys-border space-y-4">
+            <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản Toàn Hệ Thống
+            </h3>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-nys-border">
+                  <tr>
+                    <th class="p-3.5">Họ và tên</th>
+                    <th class="p-3.5">Vai trò</th>
+                    <th class="p-3.5">Email / Tên Đăng Nhập</th>
+                    <th class="p-3.5">Trạng thái</th>
+                    <th class="p-3.5 text-right">Thao Tác</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-nys-border text-slate-200">
+                  <tr class="hover:bg-slate-900/40">
+                    <td class="p-3.5 font-bold text-white">ThS. Nguyễn Gia Minh</td>
+                    <td class="p-3.5 text-amber-300 font-semibold">Giáo viên Chủ nhiệm</td>
+                    <td class="p-3.5 font-mono">nguyengiaminh@newyorkschools.edu.vn</td>
+                    <td class="p-3.5"><span class="px-2 py-0.5 bg-green-500/20 text-green-300 rounded text-[10px] font-bold">Hoạt động</span></td>
+                    <td class="p-3.5 text-right">
+                      <button onclick="alert('Đã đặt lại mật khẩu về mặc định: teacher123')" class="px-3 py-1 bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 text-amber-300 font-bold rounded-lg transition-all text-[11px]">Reset Pass</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. MỤC GỬI THÔNG BÁO HỆ THỐNG (GIAO DIỆN CHUẨN 100% NHƯ ÁNH 3) -->
+        <section id="tab-admin-notifications" class="dashboard-tab space-y-6">
+          <div class="bg-nys-cardBlue p-6 md:p-8 rounded-2xl border border-nys-border space-y-6">
+            
+            <div class="flex items-center space-x-3 pb-4 border-b border-nys-border">
+              <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-paper-plane"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white">Gửi Thông Báo Hệ Thống (Push Notification App NYS)</h3>
+                <p class="text-xs text-slate-400">Thông báo gửi trực tiếp đến ứng dụng di động theo đối tượng lựa chọn</p>
+              </div>
+            </div>
+
+            <form onsubmit="handleSendNotification(event)" class="space-y-5">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 uppercase mb-2">CHỌN ĐỐI TƯỢNG NHẬN THÔNG BÁO *</label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <label class="p-3.5 bg-slate-900/80 border border-amber-400/80 rounded-xl flex items-center space-x-3 cursor-pointer">
+                    <input type="radio" name="targetGroup" checked class="text-amber-400 bg-slate-950 border-blue-400/30">
+                    <div>
+                      <p class="text-xs font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-globe text-blue-400"></i> Tất cả người dùng</p>
+                      <p class="text-[10px] text-slate-400">Toàn thể GV, PH &amp; Học sinh</p>
+                    </div>
+                  </label>
+
+                  <label class="p-3.5 bg-slate-900/80 border border-nys-border hover:border-amber-400 rounded-xl flex items-center space-x-3 cursor-pointer">
+                    <input type="radio" name="targetGroup" class="text-amber-400 bg-slate-950 border-blue-400/30">
+                    <div>
+                      <p class="text-xs font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-chalkboard-user text-amber-400"></i> Chỉ Giáo viên</p>
+                      <p class="text-[10px] text-slate-400">86 Giáo viên toàn trường</p>
+                    </div>
+                  </label>
+
+                  <label class="p-3.5 bg-slate-900/80 border border-nys-border hover:border-amber-400 rounded-xl flex items-center space-x-3 cursor-pointer">
+                    <input type="radio" name="targetGroup" class="text-amber-400 bg-slate-950 border-blue-400/30">
+                    <div>
+                      <p class="text-xs font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-people-group text-green-400"></i> Phụ huynh &amp; Học sinh</p>
+                      <p class="text-[10px] text-slate-400">1,248 Học sinh &amp; Phụ huynh</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-300 mb-1.5">Tiêu đề thông báo *</label>
+                  <input type="text" required placeholder="Nhập tiêu đề ngắn gọn..." class="w-full p-3 bg-slate-900/90 border border-nys-border rounded-xl text-xs text-white focus:border-amber-400 focus:outline-none">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-300 mb-1.5">Loại thông báo</label>
+                  <select class="w-full p-3 bg-slate-900/90 border border-nys-border rounded-xl text-xs text-white focus:border-amber-400 focus:outline-none">
+                    <option>📢 Thông báo Công vụ / Hoạt động trường</option>
+                    <option>📝 Lịch thi &amp; Kiểm tra định kỳ</option>
+                    <option>⚠️ Thông báo khẩn cấp</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5">Nội dung chi tiết *</label>
+                <textarea rows="4" required placeholder="Soạn nội dung thông báo..." class="w-full p-3 bg-slate-900/90 border border-nys-border rounded-xl text-xs text-white focus:border-amber-400 focus:outline-none"></textarea>
+              </div>
+
+              <button type="submit" class="px-6 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold rounded-xl shadow-lg transition-all text-xs flex items-center space-x-2">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Phát hành &amp; Gửi Push Notification</span>
+              </button>
             </form>
+
+            <!-- Lịch sử thông báo đã gửi -->
+            <div class="pt-6 border-t border-nys-border space-y-3">
+              <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Lịch Sử Thông Báo Đã Gửi</h4>
+              
+              <div class="space-y-2">
+                <div class="p-3.5 bg-slate-900/80 rounded-xl border border-nys-border flex items-center justify-between text-xs">
+                  <div>
+                    <span class="font-bold text-white">Lịch họp Hội đồng Giáo viên tháng 10</span>
+                    <span class="text-[10px] text-slate-400 ml-2">(Công vụ - teachers)</span>
+                  </div>
+                  <span class="text-[10px] text-amber-400 font-mono">10:30 – Hôm nay</span>
+                </div>
+
+                <div class="p-3.5 bg-slate-900/80 rounded-xl border border-nys-border flex items-center justify-between text-xs">
+                  <div>
+                    <span class="font-bold text-white">Thống nhất Đề thi Giữa kỳ I môn Toán THPT</span>
+                    <span class="text-[10px] text-slate-400 ml-2">(Chuyên môn - teachers)</span>
+                  </div>
+                  <span class="text-[10px] text-amber-400 font-mono">16:00 – Hôm qua</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 5. MỤC TIN NHẮN CHAT CHO ADMIN -->
+        <section id="tab-admin-messages" class="dashboard-tab space-y-6">
+          <div class="bg-nys-cardBlue rounded-2xl border border-nys-border h-[600px] flex overflow-hidden">
+            <div class="w-80 border-r border-nys-border bg-slate-950/60 flex flex-col shrink-0">
+              <div class="p-4 border-b border-nys-border">
+                <h3 class="font-bold text-white text-sm">Hộp Thư Quản Trị Admin</h3>
+              </div>
+              <div class="p-3 border-b border-nys-border text-xs text-slate-300">
+                <i class="fa-solid fa-comments text-amber-400 mr-2"></i> Trao đổi Ban Giám Hiệu
+              </div>
+            </div>
+            <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
+              Chọn cuộc trò chuyện để trao đổi thông tin với Giáo viên &amp; Cán bộ
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. CÀI ĐẶT ADMIN: ĐƯỢC PHÉP SỬA VÀ LƯU THAY ĐỔI -->
+        <section id="tab-admin-settings" class="dashboard-tab space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 bg-nys-cardBlue rounded-2xl border border-nys-border p-6 md:p-8 space-y-6">
+              <div class="flex items-center space-x-2 text-amber-400 text-lg font-bold">
+                <i class="fa-solid fa-user-pen"></i>
+                <h3>Đổi Thông Tin Cá Nhân Admin</h3>
+              </div>
+
+              <div class="space-y-4 text-xs">
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-2">Họ và tên Quản trị viên</label>
+                  <input type="text" value="ThS. Nguyễn Gia Minh" class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-white font-medium focus:border-amber-400 focus:outline-none">
+                </div>
+
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-2">Số điện thoại liên hệ</label>
+                  <input type="text" value="0988 123 456" class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-white font-medium focus:border-amber-400 focus:outline-none">
+                </div>
+
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-2">Email Quản trị</label>
+                  <input type="email" value="admin@newyorkschools.edu.vn" class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-slate-300 font-mono focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button onclick="alert('Đã cập nhật thông tin Admin thành công!')" class="px-6 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold rounded-xl shadow-lg transition-all text-xs">
+                  Lưu Thay Đổi
+                </button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 space-y-6">
+              <div class="bg-nys-cardBlue rounded-2xl border border-nys-border p-6 md:p-8 space-y-5">
+                <div class="flex items-center space-x-2 text-blue-400 text-lg font-bold">
+                  <i class="fa-solid fa-lock"></i>
+                  <h3>Tài Khoản &amp; Bảo Mật</h3>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                  <div>
+                    <label class="block text-slate-300 font-semibold mb-2">Mật khẩu hiện tại</label>
+                    <input type="password" value="12345678" class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-white font-mono focus:border-blue-400 focus:outline-none">
+                  </div>
+
+                  <div>
+                    <label class="block text-slate-300 font-semibold mb-2">Mật khẩu mới</label>
+                    <input type="password" placeholder="Nhập mật khẩu mới..." class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-white placeholder-slate-500 focus:border-blue-400 focus:outline-none">
+                  </div>
+                </div>
+
+                <div class="pt-2">
+                  <button onclick="alert('Cập nhật mật khẩu thành công!')" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all text-xs">
+                    Cập Nhật Mật Khẩu
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-nys-cardBlue rounded-2xl border border-nys-border p-6 md:p-8 flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-white text-sm">Thông Tin Nhà Phát Triển</h4>
+                  <p class="text-xs text-slate-400 mt-1">Hệ Thống Giáo Dục New York Schools</p>
+                </div>
+
+                <button onclick="openDevModal()" class="px-4 py-2.5 border border-amber-400/60 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 font-bold rounded-xl text-xs transition-all flex items-center space-x-1.5 shrink-0">
+                  <span>&lt;/&gt;</span>
+                  <span>Xem Nhà Phát Triển</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+
+  <!-- =================================================================== -->
+  <!-- MÀN HÌNH 3: TRANG CỔNG GIÁO VIÊN (TEACHER PORTAL)                   -->
+  <!-- =================================================================== -->
+  <div id="teacherPage" class="hidden h-screen flex overflow-hidden bg-[#081126]">
+
+    <!-- Sidebar Giáo Viên -->
+    <aside class="w-64 bg-nys-sidebar border-r border-nys-border flex flex-col justify-between shrink-0">
+      <div>
+        <div class="p-5 border-b border-nys-border flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-sm tracking-wider text-white">NEW YORK SCHOOLS</h1>
+            <p class="text-[10px] text-blue-400 font-semibold tracking-widest">HỆ THỐNG GIÁO DỤC CHẤT LƯỢNG CAO NEW YORK SCHOOLS</p>
+          </div>
         </div>
+
+        <nav class="mt-4 space-y-1">
+          <button onclick="switchTeacherTab('home')" id="btn-teacher-home" class="nav-btn active w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-house w-5"></i>
+            <span>Trang Chủ</span>
+          </button>
+
+          <button onclick="switchTeacherTab('tasks')" id="btn-teacher-tasks" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-list-check w-5"></i>
+            <span>Tác vụ Giáo viên</span>
+          </button>
+
+          <button onclick="switchTeacherTab('accounts')" id="btn-teacher-accounts" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-users-gear w-5"></i>
+            <span>Tài khoản PH &amp; HS</span>
+          </button>
+
+          <button onclick="switchTeacherTab('notifications')" id="btn-teacher-notifications" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-bullhorn w-5"></i>
+            <span>Thông Báo</span>
+          </button>
+
+          <button onclick="switchTeacherTab('messages')" id="btn-teacher-messages" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-comments w-5"></i>
+            <span>Tin Nhắn</span>
+          </button>
+
+          <button onclick="switchTeacherTab('settings')" id="btn-teacher-settings" class="nav-btn w-full flex items-center space-x-3 px-6 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+            <i class="fa-solid fa-gear w-5"></i>
+            <span>Cài Đặt</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-4 border-t border-nys-border flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">NA</div>
+          <div>
+            <p class="text-xs font-bold text-white">ThS. Nguyễn Gia Minh</p>
+            <p class="text-[10px] text-slate-400">Giáo viên Chủ nhiệm</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="text-slate-400 hover:text-amber-400 p-1.5 transition-colors" title="Đăng xuất">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#081126]">
+      <header class="h-16 border-b border-nys-border px-8 flex items-center justify-between shrink-0 bg-nys-sidebar/50 backdrop-blur-md">
+        <div class="flex items-center space-x-3">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-school text-amber-400"></i> NEW YORK SCHOOLS <span class="text-slate-400 font-normal">| Cơ Sở Dữ Liệu New York Schools</span>
+          </h2>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2.5">
+            <div class="relative">
+              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">NA</div>
+              <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-slate-900 rounded-full"></span>
+            </div>
+            <div class="text-left">
+              <p class="text-xs font-bold text-white">ThS. Nguyễn Gia Minh</p>
+              <p class="text-[10px] text-slate-400">Giáo viên Chủ nhiệm</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+
+        <!-- 1. TRANG CHỦ GIÁO VIÊN -->
+        <section id="tab-teacher-home" class="teacher-tab active space-y-6">
+          <div class="bg-gradient-to-r from-[#122254] via-[#162a6b] to-[#0f1d47] rounded-3xl p-6 md:p-8 border border-blue-400/30 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="absolute right-4 -bottom-8 opacity-10 text-white text-9xl pointer-events-none">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="relative z-10 space-y-3.5 max-w-2xl">
+              <div>
+                <span class="px-3.5 py-1 bg-blue-600/30 border border-blue-400/40 text-blue-200 rounded-xl text-xs font-bold tracking-wide inline-block">
+                  NĂM HỌC 2026 - 2027
+                </span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-wide">
+                  Xin chào, ThS. Nguyễn Gia Minh 👋
+                </h2>
+                <span class="px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-lg text-xs font-bold tracking-wider">
+                  Mã NYer: NY280611
+                </span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <span class="px-3 py-1 bg-blue-600/40 border border-blue-400/50 text-white font-semibold rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-user-shield text-amber-400"></i> GVCN Lớp 10A1
+                </span>
+                <span class="px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 font-semibold rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-crown text-amber-400"></i> Khối trưởng Khối Toán THPT
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2 text-xs text-blue-200 opacity-90 pt-1">
+                <i class="fa-solid fa-envelope text-amber-400"></i>
+                <span class="font-mono">minhng@newyorkschools.edu.vn</span>
+              </div>
+            </div>
+
+            <div class="relative z-10 shrink-0 w-full md:w-auto">
+              <div class="bg-slate-900/60 backdrop-blur-md border border-blue-400/30 rounded-2xl p-4 md:p-5 flex items-center justify-around md:justify-center gap-6 shadow-xl">
+                <div class="text-center px-2">
+                  <p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">LỚP PHỤ TRÁCH</p>
+                  <p class="text-2xl md:text-3xl font-extrabold text-white">4 Lớp</p>
+                </div>
+                <div class="w-px h-10 bg-blue-400/30"></div>
+                <div class="text-center px-2">
+                  <p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">HỌC SINH</p>
+                  <p class="text-2xl md:text-3xl font-extrabold text-amber-400">142 HS</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. TAB TÁC VỤ GIÁO VIÊN (3 TẦNG) -->
+        <section id="tab-teacher-tasks" class="teacher-tab space-y-6">
+          <div class="space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-star text-amber-400"></i> CÔNG CỤ CHÍNH TRÊN CÙNG
+            </h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+              <div onclick="openWidgetModal('Lịch Hoạt Động', 'Xem lịch sinh hoạt lớp, ngoại khóa, lịch họp phụ huynh và tuần lễ văn hóa trường.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-calendar-week"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Lịch hoạt động</p>
+                <p class="text-[10px] text-slate-400">Sự kiện &amp; Tuần</p>
+              </div>
+
+              <div onclick="openWidgetModal('Sổ Báo Giảng', 'Theo dõi tiến độ chương trình 18/18 tiết dạy đã hoàn thành.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Sổ báo giảng</p>
+                <p class="text-[10px] text-slate-400">Lịch giảng dạy</p>
+              </div>
+
+              <div onclick="openWidgetModal('Yêu Cầu Nghỉ Phép', 'Gửi đơn xin nghỉ dạy/dạy bù trực tuyến cho Ban Giám Hiệu.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-red-500/20 text-red-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-umbrella-beach"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Yêu cầu nghỉ phép</p>
+                <p class="text-[10px] text-slate-400">Gửi BGH duyệt</p>
+              </div>
+
+              <div onclick="openWidgetModal('Học Sinh Lớp Chủ Nhiệm', 'Quản lý 38 học sinh lớp 10A1 cùng thông tin liên hệ phụ huynh.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-green-500/20 text-green-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Học sinh lớp CN</p>
+                <p class="text-[10px] text-slate-400">Lớp 10A1</p>
+              </div>
+
+              <div onclick="openWidgetModal('Báo Cáo Học Tập', 'Xuất báo cáo tổng hợp tình hình nề nếp, điểm số và khen thưởng.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Báo cáo</p>
+                <p class="text-[10px] text-slate-400">Tổng hợp tháng</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tầng 2: Widget Chọn Lớp -->
+          <div class="bg-gradient-to-r from-[#14265c] via-[#193278] to-[#11224d] p-6 rounded-3xl border border-blue-400/40 shadow-2xl relative overflow-hidden">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-5">
+              <div>
+                <span class="px-3 py-1 bg-amber-400/20 border border-amber-400/30 text-amber-300 rounded-lg text-[10px] font-bold tracking-wider uppercase">
+                  KHỐI GIẢNG DẠY THPT
+                </span>
+                <h3 class="text-xl font-extrabold text-white mt-1 flex items-center gap-2">
+                  <i class="fa-solid fa-shapes text-amber-400"></i> CHỌN LỚP HỌC PHỤ TRÁCH
+                </h3>
+              </div>
+              <p class="text-xs text-blue-200">Chọn lớp để thực hiện các thao tác quản lý bên dưới</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div onclick="selectClass('10A1')" id="card-class-10A1" class="p-4 rounded-2xl bg-blue-600/30 border-2 border-amber-400 cursor-pointer transition-all flex items-center justify-between group shadow-lg">
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-lg font-black text-white">LỚP 10A1</span>
+                    <span class="px-2 py-0.5 bg-amber-400 text-slate-950 font-extrabold text-[9px] rounded-md">LỚP CN</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mt-1">Sĩ số: <strong class="text-white">38 HS</strong> | Phòng: <strong class="text-white">A.302</strong></p>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 font-bold flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+              </div>
+
+              <div onclick="selectClass('11B2')" id="card-class-11B2" class="p-4 rounded-2xl bg-slate-900/60 border border-nys-border hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between group">
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-lg font-black text-white">LỚP 11B2</span>
+                    <span class="px-2 py-0.5 bg-blue-500/30 text-blue-300 font-bold text-[9px] rounded-md">BỘ MÔN</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mt-1">Sĩ số: <strong class="text-white">35 HS</strong> | Phòng: <strong class="text-white">B.201</strong></p>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-800 text-slate-400 group-hover:text-white flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+
+              <div onclick="selectClass('12C1')" id="card-class-12C1" class="p-4 rounded-2xl bg-slate-900/60 border border-nys-border hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between group">
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-lg font-black text-white">LỚP 12C1</span>
+                    <span class="px-2 py-0.5 bg-blue-500/30 text-blue-300 font-bold text-[9px] rounded-md">BỘ MÔN</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mt-1">Sĩ số: <strong class="text-white">40 HS</strong> | Phòng: <strong class="text-white">C.104</strong></p>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-800 text-slate-400 group-hover:text-white flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tầng 3: Công cụ thao tác theo lớp -->
+          <div class="space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-blue-400"></i> THAO TÁC THEO LỚP ĐANG CHỌN (<span id="selectedClassName" class="text-amber-400">10A1</span>)
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <div onclick="openWidgetModal('Sổ Ghi Đầu Bài', 'Ghi chép tình hình tiết học, nhận xét nề nếp và xếp loại giờ dạy.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-amber-400/20 text-amber-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Sổ ghi đầu bài</p>
+                <p class="text-[10px] text-slate-400">Ghi chép tiết dạy</p>
+              </div>
+
+              <div onclick="openWidgetModal('Ý Kiến GVCN', 'Gửi đánh giá tuần, nhận xét rèn luyện đến Phụ huynh học sinh.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-comment-medical"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Ý kiến GVCN</p>
+                <p class="text-[10px] text-slate-400">Nhận xét rèn luyện</p>
+              </div>
+
+              <div onclick="openWidgetModal('Nhập Điểm', 'Nhập điểm kiểm tra thường xuyên, giữa kỳ và cuối kỳ môn Toán.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-green-500/20 text-green-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Nhập điểm</p>
+                <p class="text-[10px] text-slate-400">Bảng điểm lớp</p>
+              </div>
+
+              <div onclick="openWidgetModal('Danh Sách Lớp', 'Xem thông tin chi tiết từng học sinh, ngày sinh, sơ yếu lý lịch.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-address-book"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Danh sách lớp</p>
+                <p class="text-[10px] text-slate-400">Sơ yếu lý lịch</p>
+              </div>
+
+              <div onclick="openWidgetModal('Giao Bài Tập Về Nhà', 'Tạo bài tập Toán nâng cao, giao bài và đặt hạn nộp bài trực tuyến.')" class="bg-nys-cardBlue p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 group-hover:scale-110 transition-transform flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-file-pen"></i>
+                </div>
+                <p class="text-xs font-bold text-white">Giao BTVN</p>
+                <p class="text-[10px] text-slate-400">Bài tập online</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. TAB TÀI KHOẢN PH & HS FOR TEACHER -->
+        <section id="tab-teacher-accounts" class="teacher-tab space-y-6">
+          <div class="bg-nys-cardBlue p-6 rounded-2xl border border-nys-border space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                  <i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản Phụ Huynh &amp; Học Sinh App NYS
+                </h3>
+                <p class="text-xs text-slate-300 mt-1">Giáo viên có quyền cập nhật Tên đăng nhập &amp; Mật khẩu cho Phụ huynh và Học sinh đăng nhập App NYS</p>
+              </div>
+
+              <div class="flex bg-slate-900 p-1 rounded-xl border border-nys-border shrink-0">
+                <button onclick="switchAccountSubtab('parents')" id="btn-subtab-parents" class="px-4 py-2 text-xs font-bold rounded-lg bg-amber-400 text-slate-950 transition-all">
+                  <i class="fa-solid fa-user-tie me-1"></i> Phụ Huynh
+                </button>
+                <button onclick="switchAccountSubtab('students')" id="btn-subtab-students" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">
+                  <i class="fa-solid fa-user-graduate me-1"></i> Học Sinh
+                </button>
+              </div>
+            </div>
+
+            <!-- SUBTAB PHỤ HUYNH -->
+            <div id="subtab-parents" class="account-subtab active space-y-4">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-nys-border">
+                    <tr>
+                      <th class="p-3.5">Phụ Huynh</th>
+                      <th class="p-3.5">Học Sinh - Lớp</th>
+                      <th class="p-3.5">Tên Đăng Nhập App NYS</th>
+                      <th class="p-3.5">Mật Khẩu Hiện Tại</th>
+                      <th class="p-3.5 text-right">Thao Tác</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-nys-border text-slate-200">
+                    <tr class="hover:bg-slate-900/40">
+                      <td class="p-3.5 font-bold text-white">Ông Nguyễn Văn Bình</td>
+                      <td class="p-3.5 text-blue-300 font-semibold">Nguyễn Gia Minh (Lớp 10A1)</td>
+                      <td class="p-3.5 font-mono text-amber-300">0987654321</td>
+                      <td class="p-3.5 font-mono">NY00000000</td>
+                      <td class="p-3.5 text-right">
+                        <button onclick="openEditAccountModal('Ông Nguyễn Văn Bình', 'ph_nguyenvanbinh', 'Phụ huynh')" class="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 text-amber-300 font-bold rounded-lg transition-all text-[11px]">
+                          <i class="fa-solid fa-key me-1"></i> Đổi Đăng Nhập / Mật Khẩu
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SUBTAB HỌC SINH -->
+            <div id="subtab-students" class="account-subtab space-y-4">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-nys-border">
+                    <tr>
+                      <th class="p-3.5">Học Sinh</th>
+                      <th class="p-3.5">Lớp</th>
+                      <th class="p-3.5">Mã Học Sinh</th>
+                      <th class="p-3.5">Mật Khẩu Hiện Tại</th>
+                      <th class="p-3.5 text-right">Thao Tác</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-nys-border text-slate-200">
+                    <tr class="hover:bg-slate-900/40">
+                      <td class="p-3.5 font-bold text-white">Nguyễn Gia Minh</td>
+                      <td class="p-3.5 text-blue-300 font-semibold">10A1</td>
+                      <td class="p-3.5 font-mono text-amber-300">NY00000000@newyorkschools.vn</td>
+                      <td class="p-3.5 font-mono">NY00000000</td>
+                      <td class="p-3.5 text-right">
+                        <button onclick="openEditAccountModal('Nguyễn Gia Minh', 'HS-2026-1024', 'Học sinh')" class="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 text-amber-300 font-bold rounded-lg transition-all text-[11px]">
+                          <i class="fa-solid fa-key me-1"></i> Đổi Mã / Mật Khẩu
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. TAB THÔNG BÁO TEACHER -->
+        <section id="tab-teacher-notifications" class="teacher-tab space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-nys-cardBlue p-6 rounded-2xl border border-nys-border space-y-4">
+              <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-bullhorn"></i> Thông Báo Từ Admin / BGH
+              </h3>
+
+              <div class="space-y-3 text-xs">
+                <div class="p-4 bg-slate-900/70 rounded-xl border border-nys-border space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="px-2 py-0.5 bg-blue-600/30 border border-blue-400/40 text-blue-200 rounded text-[10px] font-bold">BGH TRƯỜNG</span>
+                    <span class="text-[10px] text-slate-400">24/10/2026</span>
+                  </div>
+                  <p class="font-bold text-white text-sm">Lịch họp Hội đồng Giáo viên tháng 10</p>
+                  <p class="text-slate-300 leading-relaxed">Yêu cầu toàn thể GVCN có mặt lúc 14h00 chiều Thứ 6 tại Hội trường A để quán triệt kế hoạch thi giữa kỳ.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-nys-cardBlue p-6 rounded-2xl border border-nys-border space-y-4">
+              <h3 class="text-base font-bold text-green-400 flex items-center gap-2">
+                <i class="fa-solid fa-file-signature"></i> Đơn Xin Nghỉ Có Phép Từ PHHS
+              </h3>
+
+              <div class="space-y-3 text-xs">
+                <div class="p-4 bg-slate-900/70 rounded-xl border border-nys-border space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-white text-sm">HS: Trần Anh Dũng (Lớp 10A1)</span>
+                    <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-400/30 rounded text-[10px] font-bold">Chờ duyệt</span>
+                  </div>
+                  <p class="text-slate-300"><strong>Người gửi:</strong> PH. Bà Trần Thị Hoa | <strong>Nghỉ ngày:</strong> 25/10/2026</p>
+                  <p class="text-slate-400 italic">"Lý do: Cháu bị sốt siêu vi, gia đình xin phép cho cháu nghỉ học 1 ngày để đi khám bệnh."</p>
+                  <div class="flex space-x-2 pt-1">
+                    <button onclick="alert('Đã duyệt đơn nghỉ phép!')" class="px-3 py-1 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-[11px]">Duyệt đơn</button>
+                    <button onclick="alert('Đã từ chối đơn!')" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-[11px]">Từ chối</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. TAB TIN NHẮN TEACHER -->
+        <section id="tab-teacher-messages" class="teacher-tab space-y-6">
+          <div class="bg-nys-cardBlue rounded-2xl border border-nys-border h-[600px] flex overflow-hidden">
+            <div class="w-80 border-r border-nys-border bg-slate-950/60 flex flex-col shrink-0">
+              <div class="p-4 border-b border-nys-border">
+                <h3 class="font-bold text-white text-sm">Hộp Thư Phụ Huynh &amp; Học Sinh</h3>
+              </div>
+              <div class="p-3 border-b border-nys-border text-xs text-slate-300">
+                <i class="fa-solid fa-users text-amber-400 mr-2"></i> Nhóm Lớp 10A1
+              </div>
+            </div>
+            <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
+              Chọn cuộc trò chuyện để gửi tin nhắn
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. TAB CÀI ĐẶT GIÁO VIÊN (KHÓA THÔNG TIN & KHÔNG NÚT LƯU) -->
+        <section id="tab-teacher-settings" class="teacher-tab space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 bg-nys-cardBlue rounded-2xl border border-nys-border p-6 md:p-8 space-y-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2 text-amber-400 text-lg font-bold">
+                  <i class="fa-solid fa-user-lock"></i>
+                  <h3>Thông Tin Cá Nhân</h3>
+                </div>
+                <span class="px-2.5 py-1 bg-amber-400/10 text-amber-400 border border-amber-400/30 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                  <i class="fa-solid fa-lock"></i> 
+                  Không thể chỉnh sửa
+                </span>
+              </div>
+
+              <div class="space-y-4 text-xs opacity-75">
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-2">Họ và tên giáo viên</label>
+                  <input type="text" value="ThS. Nguyễn Gia Minh" disabled readonly class="w-full p-3.5 bg-slate-950/80 border border-nys-border rounded-xl text-slate-300 font-medium cursor-not-allowed">
+                </div>
+
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-2">Số điện thoại liên hệ</label>
+                  <input type="text" value="0988 123 456" disabled readonly class="w-full p-3.5 bg-slate-950/80 border border-nys-border rounded-xl text-slate-300 font-medium cursor-not-allowed">
+                </div>
+
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-2">Email giảng dạy</label>
+                  <input type="email" value="nguyengiaminh@newyorkschools.edu.vn" disabled readonly class="w-full p-3.5 bg-slate-950/80 border border-nys-border rounded-xl text-slate-400 font-mono cursor-not-allowed">
+                </div>
+              </div>
+
+              <div class="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-[11px] flex items-center space-x-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400 shrink-0"></i>
+                <span>Thông tin cá nhân được quản lý tập trung bởi Nhà trường. Vui lòng liên hệ Admin nếu Thầy/Cô cần điều chỉnh.</span>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 space-y-6">
+              <div class="bg-nys-cardBlue rounded-2xl border border-nys-border p-6 md:p-8 space-y-5">
+                <div class="flex items-center space-x-2 text-blue-400 text-lg font-bold">
+                  <i class="fa-solid fa-lock"></i>
+                  <h3>Tài Khoản &amp; Bảo Mật</h3>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                  <div>
+                    <label class="block text-slate-300 font-semibold mb-2">Mật khẩu hiện tại</label>
+                    <input type="password" value="12345678" class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-white font-mono focus:border-blue-400 focus:outline-none">
+                  </div>
+
+                  <div>
+                    <label class="block text-slate-300 font-semibold mb-2">Mật khẩu mới</label>
+                    <input type="password" placeholder="Nhập mật khẩu mới..." class="w-full p-3.5 bg-slate-900/90 border border-nys-border rounded-xl text-white placeholder-slate-500 focus:border-blue-400 focus:outline-none">
+                  </div>
+                </div>
+
+                <div class="pt-2">
+                  <button onclick="alert('Cập nhật mật khẩu thành công!')" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all text-xs">
+                    Cập Nhật Mật Khẩu
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-nys-cardBlue rounded-2xl border border-nys-border p-6 md:p-8 flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-white text-sm">Thông Tin Nhà Phát Triển</h4>
+                  <p class="text-xs text-slate-400 mt-1">Hệ Thống Giáo Duc New York Schools</p>
+                </div>
+
+                <button onclick="openDevModal()" class="px-4 py-2.5 border border-amber-400/60 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 font-bold rounded-xl text-xs transition-all flex items-center space-x-1.5 shrink-0">
+                  <span>&lt;/&gt;</span>
+                  <span>Xem Nhà Phát Triển</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+
+  <!-- MODALS CHUNG -->
+  <div id="editAccountModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-[#14234d] border border-blue-400/30 w-full max-w-md rounded-3xl p-6 shadow-2xl text-white relative">
+      <button onclick="closeModal('editAccountModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <div class="text-center mb-5">
+        <h3 class="text-lg font-bold text-white">Đổi Tên Đăng Nhập &amp; Mật Khẩu</h3>
+        <p class="text-xs text-blue-200 mt-0.5">Tài khoản: <span id="targetAccountName" class="font-bold text-amber-300"></span></p>
+      </div>
+
+      <div class="space-y-4 text-xs mb-6">
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Tên đăng nhập App NYS mới</label>
+          <input id="editUsername" type="text" class="w-full p-3 bg-slate-900 border border-nys-border rounded-xl text-white focus:border-amber-400">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Mật khẩu mới</label>
+          <input id="editPassword" type="password" placeholder="Nhập mật khẩu mới..." class="w-full p-3 bg-slate-900 border border-nys-border rounded-xl text-white focus:border-amber-400">
+        </div>
+      </div>
+
+      <div class="flex space-x-3">
+        <button onclick="closeModal('editAccountModal')" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs">Hủy</button>
+        <button onclick="saveAccountChange()" class="w-1/2 py-2.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Lưu Thay Đổi</button>
+      </div>
     </div>
+  </div>
 
-    <!-- JAVASCRIPT LOGIC XÁC THỰC -->
-    <script>
-        const ACCOUNTS = {
-            'Admin': {
-                users: ['admin@newyorkschools.edu.vn'],
-                pass: 'newyorkschools123@'
-            },
-            'Giáo viên': {
-                users: ['minhng@newyorkschools.edu.vn'],
-                pass: 'Programmer07*09*11'
-            }
-        };
+  <div id="widgetModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-[#14234d] border border-blue-400/30 w-full max-w-md rounded-3xl p-6 shadow-2xl text-white relative">
+      <button onclick="closeModal('widgetModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h3 id="widgetModalTitle" class="text-lg font-bold text-amber-400 mb-2">Tiện ích Tác vụ</h3>
+      <p id="widgetModalContent" class="text-xs text-slate-300 leading-relaxed mb-6"></p>
+      <button onclick="closeModal('widgetModal')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs">Đóng</button>
+    </div>
+  </div>
 
-        let currentRole = 'Admin';
+  <div id="devModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-[#14234d] border border-blue-400/40 w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl text-white relative">
+      <button onclick="closeModal('devModal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
 
-        function openLoginModal(role) {
-            currentRole = role;
-            const modal = document.getElementById('loginModal');
-            const roleTitle = document.getElementById('roleTitle');
-            const modalIcon = document.getElementById('modalIcon');
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/40 text-blue-300 flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="fa-solid fa-laptop-code"></i>
+        </div>
+        <h3 class="text-xl font-extrabold text-white">Nhà Phát Triển</h3>
+        <p class="text-xs text-slate-400 mt-1">Thông tin bản quyền &amp; hỗ trợ</p>
+      </div>
 
-            document.getElementById('errorMessage').classList.add('hidden');
-            document.getElementById('successMessage').classList.add('hidden');
-            document.getElementById('usernameInput').value = '';
-            document.getElementById('passwordInput').value = '';
+      <div class="space-y-3 bg-slate-950/60 p-5 rounded-2xl border border-nys-border text-xs mb-6">
+        <div class="flex items-center space-x-3">
+          <i class="fa-solid fa-users text-blue-400 w-5 text-center"></i>
+          <div><span class="text-slate-400 font-bold">Team:</span><span class="text-white font-semibold ml-1">Trường Tiểu học - THCS &amp; THPT New york</span></div>
+        </div>
+        <div class="flex items-center space-x-3">
+          <i class="fa-solid fa-envelope text-green-400 w-5 text-center"></i>
+          <div><span class="text-slate-400 font-bold">Email:</span><span class="text-green-300 font-mono ml-1">support@newyorkschools.vn</span></div>
+        </div>
+        <div class="flex items-center space-x-3">
+          <i class="fa-solid fa-globe text-amber-400 w-5 text-center"></i>
+          <div><span class="text-slate-400 font-bold">Website:</span><span class="text-amber-300 font-mono ml-1">www.newyorkschools.vn</span></div>
+        </div>
+      </div>
 
-            roleTitle.innerText = role;
+      <button onclick="closeModal('devModal')" class="w-full py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition-all text-xs">Đóng</button>
+    </div>
+  </div>
 
-            if (role === 'Admin') {
-                modalIcon.className = "w-14 h-14 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl";
-                modalIcon.innerHTML = '<i class="fa-solid fa-user-shield"></i>';
-            } else {
-                modalIcon.className = "w-14 h-14 rounded-2xl bg-blue-500/20 text-blue-300 flex items-center justify-center mx-auto mb-3 text-xl";
-                modalIcon.innerHTML = '<i class="fa-solid fa-chalkboard-user"></i>';
-            }
 
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.remove('scale-95');
-            modal.querySelector('div').classList.add('scale-100');
+  <!-- JAVASCRIPT ĐIỀU KHIỂN HỆ THỐNG -->
+  <script>
+    const ACCOUNTS = {
+      'Admin': { users: ['admin'], pass: 'admin123' },
+      'Giáo viên': { users: ['minhng'], pass: 'Programmer07*09*11' }
+    };
+
+    let currentRole = 'Admin';
+
+    function openLoginModal(role) {
+      currentRole = role;
+      const modal = document.getElementById('loginModal');
+      document.getElementById('errorMessage').classList.add('hidden');
+      document.getElementById('successMessage').classList.add('hidden');
+      document.getElementById('usernameInput').value = '';
+      document.getElementById('passwordInput').value = '';
+
+      document.getElementById('roleTitle').innerText = role;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.querySelector('div').classList.remove('scale-95');
+      modal.querySelector('div').classList.add('scale-100');
+    }
+
+    function openForgotModal() {
+      const modal = document.getElementById('forgotModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function openWidgetModal(title, content) {
+      document.getElementById('widgetModalTitle').innerText = title;
+      document.getElementById('widgetModalContent').innerText = content;
+      const modal = document.getElementById('widgetModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function openDevModal() {
+      const modal = document.getElementById('devModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const rawUser = document.getElementById('usernameInput').value.trim().toLowerCase();
+      const password = document.getElementById('passwordInput').value;
+      const errorBox = document.getElementById('errorMessage');
+      const successBox = document.getElementById('successMessage');
+
+      const fullEmail = rawUser.includes('@') ? rawUser : `${rawUser}@newyorkschools.edu.vn`;
+      const validAccount = ACCOUNTS[currentRole];
+
+      if ((validAccount.users.includes(rawUser) || validAccount.users.includes(fullEmail)) && password === validAccount.pass) {
+        errorBox.classList.add('hidden');
+        successBox.classList.remove('hidden');
+
+        setTimeout(() => {
+          closeModal('loginModal');
+          document.getElementById('loginPage').classList.add('hidden');
+
+          if (currentRole === 'Admin') {
+            document.getElementById('dashboardPage').classList.remove('hidden');
+          } else {
+            document.getElementById('teacherPage').classList.remove('hidden');
+          }
+        }, 600);
+      } else {
+        successBox.classList.add('hidden');
+        errorBox.classList.remove('hidden');
+      }
+    }
+
+    function handleForgot(event) {
+      event.preventDefault();
+      alert("Yêu cầu khôi phục mật khẩu đã được gửi đến email của bạn!");
+      closeModal('forgotModal');
+    }
+
+    function handleSendNotification(event) {
+      event.preventDefault();
+      alert("Đã phát hành và gửi Push Notification thành công đến ứng dụng App NYS!");
+    }
+
+    function logout() {
+      document.getElementById('dashboardPage').classList.add('hidden');
+      document.getElementById('teacherPage').classList.add('hidden');
+      document.getElementById('loginPage').classList.remove('hidden');
+    }
+
+    function switchAdminTab(tabId) {
+      document.querySelectorAll('#dashboardPage .dashboard-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('#dashboardPage .nav-btn').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(`tab-admin-${tabId}`).classList.add('active');
+      document.getElementById(`btn-admin-${tabId}`).classList.add('active');
+    }
+
+    function switchTeacherTab(tabId) {
+      document.querySelectorAll('#teacherPage .teacher-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('#teacherPage .nav-btn').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(`tab-teacher-${tabId}`).classList.add('active');
+      document.getElementById(`btn-teacher-${tabId}`).classList.add('active');
+    }
+
+    function selectClass(className) {
+      document.getElementById('selectedClassName').innerText = className;
+      ['10A1', '11B2', '12C1'].forEach(cls => {
+        const card = document.getElementById(`card-class-${cls}`);
+        if (cls === className) {
+          card.className = "p-4 rounded-2xl bg-blue-600/30 border-2 border-amber-400 cursor-pointer transition-all flex items-center justify-between group shadow-lg";
+        } else {
+          card.className = "p-4 rounded-2xl bg-slate-900/60 border border-nys-border hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between group";
         }
+      });
+    }
 
-        function openForgotModal() {
-            const modal = document.getElementById('forgotModal');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.remove('scale-95');
-            modal.querySelector('div').classList.add('scale-100');
-        }
+    function switchAccountSubtab(type) {
+      document.querySelectorAll('.account-subtab').forEach(el => el.classList.remove('active'));
+      document.getElementById(`subtab-${type}`).classList.add('active');
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.remove('scale-100');
-            modal.querySelector('div').classList.add('scale-95');
-        }
+      const btnParents = document.getElementById('btn-subtab-parents');
+      const btnStudents = document.getElementById('btn-subtab-students');
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('usernameInput').value.trim();
-            const password = document.getElementById('passwordInput').value;
-            const errorBox = document.getElementById('errorMessage');
-            const successBox = document.getElementById('successMessage');
+      if (type === 'parents') {
+        btnParents.className = "px-4 py-2 text-xs font-bold rounded-lg bg-amber-400 text-slate-950 transition-all";
+        btnStudents.className = "px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all";
+      } else {
+        btnStudents.className = "px-4 py-2 text-xs font-bold rounded-lg bg-amber-400 text-slate-950 transition-all";
+        btnParents.className = "px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all";
+      }
+    }
 
-            const validAccount = ACCOUNTS[currentRole];
+    function openEditAccountModal(name, username, role) {
+      document.getElementById('targetAccountName').innerText = name;
+      document.getElementById('editUsername').value = username;
+      document.getElementById('editPassword').value = '';
+      const modal = document.getElementById('editAccountModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
 
-            if (validAccount.users.includes(username.toLowerCase()) && password === validAccount.pass) {
-                errorBox.classList.add('hidden');
-                successBox.classList.remove('hidden');
-
-                setTimeout(() => {
-                    alert(`Đăng nhập thành công với quyền ${currentRole}!\nHệ thống sẵn sàng đồng bộ dữ liệu với App NYS.`);
-                    closeModal('loginModal');
-                }, 800);
-            } else {
-                successBox.classList.add('hidden');
-                errorBox.classList.remove('hidden');
-            }
-        }
-
-        function handleForgot(event) {
-            event.preventDefault();
-            alert("Yêu cầu khôi phục mật khẩu đã được gửi!");
-            closeModal('forgotModal');
-        }
-    </script>
+    function saveAccountChange() {
+      alert('Đã cập nhật Tên đăng nhập và Mật khẩu thành công cho App NYS!');
+      closeModal('editAccountModal');
+    }
+  </script>
 </body>
 </html>
-
