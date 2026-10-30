@@ -1,1 +1,1 @@
-# csdl.newyorkschools.edu.vn
+# csdl.newyorkschool.edu.vn
