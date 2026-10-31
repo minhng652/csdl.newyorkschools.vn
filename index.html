@@ -150,7 +150,7 @@
             <i class="fa-solid fa-user-shield"></i>
           </div>
           <h3 class="text-xl font-bold text-white">Đăng Nhập <span id="roleTitle" class="text-amber-400">Admin</span></h3>
-          <p class="text-xs text-blue-200 mt-1">Hệ Thống Giáo Dục Chất Lượng Cao Liên cấp New York School</p>
+          <p class="text-xs text-blue-200 mt-1">Hệ Thống Giáo Dục Chất Lượng Cao Liên Cấp New York</p>
         </div>
 
         <div id="errorMessage" class="hidden mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-xs text-red-200 text-center flex items-center justify-center space-x-2">
@@ -167,11 +167,11 @@
           <div class="relative pt-2">
             <div class="border border-blue-400/40 bg-blue-950/80 rounded-2xl p-3 focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition-all flex items-center relative">
               <span class="absolute -top-2.5 left-3 px-1.5 bg-[#14234d] text-[10px] font-bold text-amber-400 uppercase tracking-wider rounded">
-                Nhập email của bạn
+                Tên tài khoản
               </span>
               <input id="usernameInput" type="text" required placeholder="Tài Khoản" class="w-full bg-transparent border-none text-white text-sm focus:outline-none pr-36 font-medium">
               <span class="absolute right-3.5 text-xs text-slate-400 font-mono font-semibold select-none pointer-events-none bg-blue-900/60 px-2 py-1 rounded-lg border border-blue-400/20">
-                @newyorkschools.vn
+                @newyorkschool.vn
               </span>
             </div>
           </div>
@@ -194,7 +194,7 @@
           </div>
 
           <button type="submit" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl shadow-lg transition-all mt-2">
-            Xác nhận đăng nhập
+            Đăng nhập
           </button>
         </form>
       </div>
@@ -215,7 +215,7 @@
         </div>
         <form onsubmit="handleForgot(event)" class="space-y-4">
           <div>
-            <input type="email" required placeholder="example@newyorkschools.edu.vn" class="w-full px-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl text-sm text-white">
+            <input type="email" required placeholder="example@newyorkschool.vn" class="w-full px-4 py-3 bg-blue-950/60 border border-blue-400/30 rounded-xl text-sm text-white">
           </div>
           <button type="submit" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl shadow-lg">
             Gửi yêu cầu khôi phục
@@ -239,7 +239,7 @@
           </div>
           <div>
             <h1 class="font-extrabold text-sm tracking-wider text-white">NEW YORK SCHOOL</h1>
-            <p class="text-[10px] text-blue-400 font-semibold tracking-widest">HỆ THỐNG GIÁO DỤC CHẤT LƯỢNG CAO LIÊN CẤP NEW YORK SCHOOL</p>
+            <p class="text-[10px] text-blue-400 font-semibold tracking-widest">HỆ THỐNG GIÁO DỤC CHẤT LƯỢNG CAO LIÊN CẤP NEW YORK</p>
           </div>
         </div>
 
@@ -354,7 +354,7 @@
 
               <div class="flex items-center space-x-2 text-xs text-blue-200 opacity-90 pt-1">
                 <i class="fa-solid fa-envelope text-amber-400"></i>
-                <span class="font-mono">admin@newyorkschools.vn</span>
+                <span class="font-mono">admin@newyorkschool.vn</span>
               </div>
             </div>
 
@@ -403,7 +403,7 @@
                   <i class="fa-solid fa-book-open"></i>
                 </div>
                 <p class="text-xs font-bold text-white">Sổ ghi đầu bài</p>
-                <p class="text-[10px] text-slate-400">Giám sát giờ dạy</p>
+                <p class="text-[10px] text-slate-400">Kiểm tra, duyệt</p>
               </div>
 
               <div onclick="openWidgetModal('Điểm Danh', 'Tổng hợp báo cáo chuyên cần, nghỉ học có phép và không phép của các khối.')" class="bg-slate-900/80 p-4 rounded-2xl border border-nys-border hover:border-amber-400 cursor-pointer transition-all flex flex-col items-center text-center space-y-2 group">
@@ -464,7 +464,7 @@
                     <i class="fa-solid fa-chalkboard-user"></i>
                   </div>
                   <div>
-                    <p class="text-xs font-extrabold text-white uppercase">1. Tài Khoản Giáo Viên</p>
+                    <p class="text-xs font-extrabold text-white uppercase">1. Tài Khoản Cán Bộ - Nhân Viên</p>
                     <p class="text-[10px] text-slate-300">86 Cán bộ - Giáo viên toàn trường</p>
                   </div>
                 </div>
@@ -508,24 +508,28 @@
                   <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-nys-border">
                     <tr>
                       <th class="p-3.5">Họ và tên</th>
+                      <th class="p-3.5">Ngày tháng năm sinh</th>
+                      <th class="p-3.5">Giới tính</th>
+                      <th class="p-3.5">Bộ môn giảng dạy</th>
                       <th class="p-3.5">Chức vụ</th>
                       <th class="p-3.5">Mã NYer</th>
                       <th class="p-3.5">Email giảng viên</th>
                       <th class="p-3.5">Tên đăng nhập</th>
-                      <th class="p-3.5">SĐT GV</th>
                       <th class="p-3.5 text-right">Thao Tác</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-nys-border text-slate-200">
                     <tr class="hover:bg-slate-900/40">
                       <td class="p-3.5 font-bold text-white">Nguyễn Gia Minh</td>
-                      <td class="p-3.5 text-amber-300 font-semibold">GVCN Lớp 10AB1 - Tổ Trưởng Toán khối THPT</td>
+                      <td class="p-3.5 text-amber-300 font-white">07/09/2011</td>
+                      <td class="p-3.5 text-amber-300 font-yellow">Nam</td>
+                      <td class="p-3.5 text-amber-300 font-pink">Toán</td>
+                      <td class="p-3.5 text-amber-300 font-semibold">GVCN Lớp 10AB1 - Tổ Trưởng tổ Toán khối THPT</td>
                       <td class="p-3.5 font-mono">NY280611</td>
-                      <td class="p-3.5 font-mono text-blue-300">minhngh@newyorkschool.vn</td>
-                      <td class="p-3.5 font-mono text-green-300">minhng</td>
-                      <td class="p-3.5 font-mono text-amber-300">0399452011</td>
+                      <td class="p-3.5 font-mono text-blue-300">minhng@newyorkschool.vn</td>
+                      <td class="p-3.5 font-mono text-red-300">minhng</td>
                       <td class="p-3.5 text-right space-x-2">
-                        <button onclick="openEditProfileModal('Nguyễn Gia Minh', 'NY280611', 'minhngh@newyorkschool.vn', 'GVCN Lớp 10AB1', 'Giáo viên')" class="px-3 py-1.5 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-400/40 text-blue-200 font-bold rounded-lg transition-all text-[11px]">
+                        <button onclick="openEditProfileModal('Nguyễn Gia Minh', '0399452011', 'minhng@newyorkschool.vn', 'GVCN Lớp 10AB1', 'Giáo viên')" class="px-3 py-1.5 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-400/40 text-blue-200 font-bold rounded-lg transition-all text-[11px]">
                           <i class="fa-solid fa-pen-to-square me-1"></i> Chỉnh sửa
                         </button>
                       </td>
